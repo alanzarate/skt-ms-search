@@ -1,0 +1,12 @@
+server:
+  port: 9568
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5555/currency
+    username: postgres
+    password: mypass
+
+custom-config:
+  minio-url: http://skt-ms-minio:9090
