@@ -14,13 +14,14 @@ import org.springframework.stereotype.Service
 @NoArgsConstructor
 class ImagesBl @Autowired constructor(
     private val clothRepository: ClothRepository,
-    private val imageService: ImageService
+    private val imageService: ImageService,
+    private val keycloakBl: KeycloakBl
 ) {
     fun getImagesAsFileDto(clothDto: ClothDto){
         val secondResult = clothRepository.getImagesInformation( clothDto.clothId.toString() )
         val arrayList: ArrayList<FileDto> = ArrayList()
         for (image in secondResult){
-            val sign = imageService.getSignedImage("", image.uuidFile!!)
+            val sign = imageService.getSignedImage(keycloakBl.getAuthorizationToken(), image.uuidFile!!)
             val fileDto: FileDto = image.adapterFileDto(sign.url)
             arrayList.add(fileDto)
         }

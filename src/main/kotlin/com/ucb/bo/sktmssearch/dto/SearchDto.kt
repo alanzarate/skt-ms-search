@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.Data
 import lombok.NoArgsConstructor
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Data
 @Builder
@@ -29,6 +31,7 @@ data class SearchDto (
 
 
 ){
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
     override fun toString(): String {
         return "SearchDto(page=$page, limit=$limit, color=$color, type=$type, style=$style, size=$size, priceGreaterThan=$priceGreaterThan, priceLessThan=$priceLessThan, category=$category)"
     }
@@ -45,6 +48,8 @@ data class SearchDto (
         if (priceGreaterThan != null && priceLessThan != null ){
             if(priceLessThan >= priceGreaterThan) throw ParameterException("CHECK range")
         }
+        if (limit <= 0) throw ParameterException("LIMIT invalid")
+        if (page <= 0) throw ParameterException("Page invalid")
 
         checkLetter(color, ::color.name)
         checkLetter(type, ::type.name)
@@ -53,15 +58,15 @@ data class SearchDto (
         checkLetter(category, ::category.name)
         checkLetter(color, ::color.name)
         checkLetter(title, ::title.name)
+        logger.info("Todos los datos son correctos")
 
     }
 
     private fun checkLetter(variable: String?, variableInClass:String) {
-        if ( variable != null){
-            if (!variable.onlyLetters()){
-                throw ParameterException("$variableInClass not only letters")
-            }
-        }
+        if(variable.isNullOrEmpty()) throw ParameterException("$variableInClass invalid")
+
+        if(!variable.onlyLetters()) throw ParameterException("$variableInClass not only letters")
+
     }
 
     private fun String.onlyLetters() = all { it.isLetter() }

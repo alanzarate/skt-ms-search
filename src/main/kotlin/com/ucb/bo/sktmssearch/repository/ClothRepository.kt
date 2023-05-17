@@ -16,70 +16,16 @@ import org.springframework.stereotype.Component
 @NoArgsConstructor
 interface ClothRepository{
 
-    @Select(value = ["SELECT cl.cloth_id , cl.name, cl.description, cl.available, po.price," +
-        "cc.name as color, fc.name as formality, sc.name as size, tc.name as type  from "+
-        " cloth cl,"+
-        " product_order po,"+
-        " product p,"+
-        " color_cloth cc,"+
-        " formality_cloth fc,  "+
-        " size_cloth sc,"+
-        " type_cloth tc"+
-        " where cl.cloth_id = po.cloth_id"+
-        " and p.product_id = po.product_id"+
-        " and cc.color_id = p.color_cloth_id"+
-        " and fc.formality_id = p.formality_cloth_id"+
-        " and sc.size_id = p.size_cloth_id"+
-        " and tc.type_id = p.type_id"+
-        " and cl.name LIKE '\${name}%'"+
-        " \${commands}"+
-        " ORDER BY cl.cloth_id DESC"+
-        " LIMIT \${limit}"+
-        " OFFSET \${offset};"])
-    fun getAbsoluteData(commands:String,limit: String, offset:String, name:String = ""): List<Cloth>
 
-    @Select(value = ["SELECT * FROM cloth \${vas};"])
-    fun getData2(vas:String, limit: Int, offset: Int):List<Any>
-
-    @Select(value = ["SELECT cl.cloth_id , cl.name, cl.description, cl.available, po.price," +
-            "cc.name as color, fc.name as formality, sc.name as size, tc.name as type  from "+
-            " cloth cl,"+
-            " product_order po,"+
-            " product p,"+
-            " color_cloth cc,"+
-            " formality_cloth fc,  "+
-            " size_cloth sc,"+
-            " type_cloth tc"+
-            " where cl.cloth_id = po.cloth_id"+
-            " and p.product_id = po.product_id"+
-            " and cc.color_id = p.color_cloth_id"+
-            " and fc.formality_id = p.formality_cloth_id"+
-            " and sc.size_id = p.size_cloth_id"+
-            " and tc.type_id = p.type_id"+
-            " and cl.name LIKE '\${name}%'"+
-            " \${commands}"+
-            " ORDER BY cl.cloth_id DESC"+
-            " LIMIT \${limit}"+
-            " OFFSET \${offset};"])
-    fun getDesigns(commands:String ,limit: String, offset:String, name:String = ""): List<Any>
-
-
-    @Select(value = ["SELECT im.image_id, im.available, im.uuidFile, im.filename, im.title" +
-            " im.description from image im" +
-            " WHERE im.cloth_id = \${idCloth} "])
-    fun getClothImages(idCloth: Int): List<Image>
-
-    @Select( value = ["Select cl.cloth_id, cl.name, cl.description, cl.user_id , cl.available " +
-            "from cloth cl "+
-            " ORDER BY cl.cloth_id DESC " +
-            " LIMIT \${limit} " +
-            " OFFSET \${offset};"])
-    fun getDesigns(limit: String, offset: String):List<Design>
 
     @Select( value = [
-        "select cl.cloth_id, cl.name, cl.description, cl.user_id , cl.available from " +
-                "type_cloth tc, type_prod tp, cloth cl, cloth_category clct, category ct " +
-                "where cl.cloth_id = clct.cloth_id " +
+        "select cl.cloth_id, cl.name, cl.description, cl.user_id , cl.available " +
+                "FROM  type_cloth tc, " +
+                "type_prod tp, " +
+                "cloth cl, " +
+                "cloth_category clct, " +
+                "category ct " +
+                "WHERE cl.cloth_id = clct.cloth_id " +
                 "and ct.category_id = clct.category_id " +
                 "and tp.type_id  = tc.type_id " +
                 "and cl.cloth_id = tc.cloth_id " +
@@ -100,5 +46,22 @@ interface ClothRepository{
     ])
     fun getImagesInformation(clothId: String):List<Image>
 
+    @Select( value=["SELECT pd.product_id , pd.name, pd.price, pd.description, pd.stock,pd.available, " +
+            "tc.name as type, cc.name as color, fc.name as style, sc.name as size " +
+            "from  product pd, " +
+            "color_cloth cc, " +
+            "formality_cloth fc,   " +
+            "size_cloth sc, " +
+            "type_prod tc " +
+            "where pd.type_id = tc.type_id " +
+            "and pd.color_cloth_id = cc.color_id " +
+            "and pd.size_cloth_id = sc.size_id " +
+            "and pd.formality_cloth_id = fc.formality_id   " +
+            "\${command} " +
+            "GROUP BY cl.cloth_id " +
+            "ORDER BY pd.product_id DESC " +
+            "LIMIT \${limit} " +
+           "OFFSET \${offset}; "])
+    fun getProductsByCommands(command: String,limit: String, offset: String): List<Cloth>
 
 }

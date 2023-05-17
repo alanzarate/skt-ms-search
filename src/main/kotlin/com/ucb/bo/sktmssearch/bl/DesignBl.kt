@@ -8,6 +8,8 @@ import com.ucb.bo.sktmssearch.repository.ClothRepository
 import com.ucb.bo.sktmssearch.service.ImageService
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -16,13 +18,14 @@ import org.springframework.stereotype.Service
 @NoArgsConstructor
 class DesignBl @Autowired constructor(
     private val clothRepository: ClothRepository,
-    private val imageService: ImageService,
     private val imagesBl: ImagesBl
 
 ){
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
     fun getInformationOfDesign(request: SearchDto): ArrayList<ClothDto> {
         println(request)
         request.validateData()
+        logger.info("El usuario requiere la informacion de un Disenio con las caracteristicas ${request.title}")
         var strCommands = ""
         if (request.category != null)
             strCommands += " and ct.name = '${request.category}' "

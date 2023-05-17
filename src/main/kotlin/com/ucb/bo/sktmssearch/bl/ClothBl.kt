@@ -5,6 +5,8 @@ import com.ucb.bo.sktmssearch.dto.SearchDto
 import com.ucb.bo.sktmssearch.repository.ClothRepository
 import lombok.AllArgsConstructor
 import lombok.NoArgsConstructor
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -12,11 +14,14 @@ import org.springframework.stereotype.Service
 @AllArgsConstructor
 @NoArgsConstructor
 class ClothBl @Autowired constructor(
-    private val clothRepository: ClothRepository
+    private val clothRepository: ClothRepository,
+    private val imagesBl: ImagesBl
 ){
-    fun getSearchedByParams(request: SearchDto): Any {
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+    fun getSearchedByParams(request: SearchDto): ArrayList<ClothDto> {
         println(request)
         request.validateData()
+        logger.info("El usuario requiere la informacion de un Ropas con las caracteristicas ${request.title}")
         var strCommands = ""
         if (request.color != null)
             strCommands += " and cc.name = '${request.color}'"
@@ -27,12 +32,14 @@ class ClothBl @Autowired constructor(
         if (request.style != null)
             strCommands += " and fc.name = '${request.style}"
         if (request.priceLessThan != null)
-            strCommands += " and po.price < ${request.priceLessThan}"
+            strCommands += " and pd.price < ${request.priceLessThan}"
         if (request.priceGreaterThan != null)
-            strCommands += " and po.price > ${request.priceGreaterThan}"
+            strCommands += " and pd.price > ${request.priceGreaterThan}"
+        if (request.title != null)
+            strCommands += " and pd.name LIKE '${request.title}%' "
 
 
-        val resultSearch = clothRepository.getAbsoluteData(strCommands, request.limit.toString(), request.getOffset().toString())
+        val resultSearch = clothRepository.getProductsByCommands(strCommands, request.limit.toString(), request.getOffset().toString())
         val listResponse: ArrayList<ClothDto> = ArrayList()
 
         for (cloth in resultSearch){
@@ -41,11 +48,7 @@ class ClothBl @Autowired constructor(
             listResponse.add(clothDto)
         }
 
-        val res: ArrayList<ClothDto> = ArrayList()
-        for(value in result){
-            val result = clothRepository.getClothImages(value)
-        }
-
+        return listResponse
 
 
 

@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionFactoryBean
 import org.mybatis.spring.annotation.MapperScan
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.Bean
 import javax.sql.DataSource
@@ -12,6 +13,7 @@ import javax.sql.DataSource
 
 @SpringBootApplication
 @EnableFeignClients
+@EnableDiscoveryClient
 @MapperScan("com.ucb.bo.sktmssearch.repository")
 class SktMsSearchApplication{
 	@Bean

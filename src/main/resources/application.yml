@@ -1,12 +1,58 @@
 server:
-  port: 9568
+  port: ${SKT_MS_USER_PORT:9568}
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: skt-ms-search
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5555/currency
-    username: postgres
-    password: mypass
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  zipkin:
+    base-url: ${ZIPKIN_URL:http://localhost:9910}
+    locator:
+      discovery:
+        enabled: true
+
+eureka:
+  config:
+    import: optional:file:.env[.properties]
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8707/eureka/}
 
 custom-config:
-  minio-url: http://skt-ms-minio:9090
+  minio-url: ${SKT_MS_MINIO:http://localhost:9090}
+  logs-uri: ${LOGS_URI}
+
+
+keycloak:
+  config:
+    import: optional:file:.env[.properties]
+  realm: ${REALM_KEYCLOAK}
+  auth-server-url: ${URL_KEYCLOAK:http://localhost:8080}
+  autodetect-bearer-only: true
+  ssl-required: none
+  resource: ${RESOURCE_KEYCLOAK}
+  credentials:
+    secret: ${SECRET_CREDENTIAL_KEYCLOAK}
+  use-resource-role-mappings: false
+  security-constraints:
+    - auth-roles:
+        - can_search_clothes
+        - can_search_products
+        - can_search_designs
+      security-collections:
+        - name: SOME USER RESOURCE
+          methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+          patterns:
+            - /api/v1/*
