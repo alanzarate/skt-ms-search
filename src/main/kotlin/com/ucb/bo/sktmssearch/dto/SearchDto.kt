@@ -63,9 +63,15 @@ data class SearchDto (
     }
 
     private fun checkLetter(variable: String?, variableInClass:String) {
-        if(variable.isNullOrEmpty()) throw ParameterException("$variableInClass invalid")
+        if (variable !=null ){
+            if (variable.isEmpty() || variable.isBlank())
+                throw ParameterException("$variableInClass invalid")
+            if(!variable.onlyLetters())
+                throw ParameterException("$variableInClass not only letters")
+        }
 
-        if(!variable.onlyLetters()) throw ParameterException("$variableInClass not only letters")
+
+
 
     }
 

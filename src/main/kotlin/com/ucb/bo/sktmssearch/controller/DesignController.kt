@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -21,9 +22,52 @@ class DesignController @Autowired constructor(
     private val designBl: DesignBl
 ){
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+
+    /*
+    POST: /api/v1/design
+    Body: (JSON)
+    {
+    page: (Int) (required)
+        -> para paginacion , empieza desde 1
+    limit: (Int) (required)
+        -> para paginacion , valores > 0
+    title: (String)
+        -> busqueda por el nombre del disenio
+    category: (String)
+        -> filtro de cateogoria, el nombre debe de la categoria debe ser exacto
+    type: (String)
+        -> filtro por tipo, el nombre del tipo debe ser exacto
+
+    }
+    Response: (JSON)
+    {
+        "data": Array?[
+            {
+                "cloth_id": Int,
+                "name": String,
+                "description": String,
+                "user_id": Int,
+                "images": Array?[
+                    {
+                        "title": String,
+                        "description": String,
+                        "url": String,
+                        "filename": String,
+                        "uuid_file": String,
+                    }
+                ]
+            }
+        ],
+        "message": String? ,
+        "success": Boolean
+    }
+     */
+
+
     @PostMapping()
-    fun getDesignData(@ModelAttribute requestBody: SearchDto?): ResponseEntity<ResponseDto<Any>>{
+    fun getDesignData(@RequestBody requestBody: SearchDto?): ResponseEntity<ResponseDto<Any>>{
         try{
+
             if (requestBody == null) throw ParameterException("Body faltante")
             val result = designBl.getInformationOfDesign(requestBody)
 

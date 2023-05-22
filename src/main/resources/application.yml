@@ -1,5 +1,5 @@
 server:
-  port: ${SKT_MS_USER_PORT:9568}
+  port: ${SKT_MS_SEARCH_PORT:9568}
 
 spring:
   config:

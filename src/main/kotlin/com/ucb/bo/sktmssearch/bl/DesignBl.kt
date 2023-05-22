@@ -18,7 +18,8 @@ import org.springframework.stereotype.Service
 @NoArgsConstructor
 class DesignBl @Autowired constructor(
     private val clothRepository: ClothRepository,
-    private val imagesBl: ImagesBl
+    private val imagesBl: ImagesBl,
+    private val keycloakBl: KeycloakBl
 
 ){
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -37,9 +38,10 @@ class DesignBl @Autowired constructor(
         val resultSearch  = clothRepository.getDesignsByCommands(
             strCommands, request.limit.toString() , request.getOffset().toString() )
         val listResponse: ArrayList<ClothDto> =  ArrayList()
+        val token = keycloakBl.getAuthorizationToken()
         for(value in resultSearch){
             val clothDto = value.adapterClothDto()
-            imagesBl.getImagesAsFileDto(clothDto)
+            imagesBl.getImagesAsFileDto(clothDto, token)
             listResponse.add(clothDto)
 
 

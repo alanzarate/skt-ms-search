@@ -30,7 +30,10 @@ class KeycloakBl @Autowired constructor(
             "client_secret" to clientSecret,
             "grant_type" to "client_credentials"
         )
+        println(mapBody)
         val response = keycloakService.getMsToken(mapBody)
-        return response.access_token
+        println(response)
+        if (response.access_token == null) throw Exception("Failded ocnecction token")
+        return response.access_token!!
     }
 }

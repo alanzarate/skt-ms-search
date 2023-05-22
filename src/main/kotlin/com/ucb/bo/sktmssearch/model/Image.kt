@@ -22,4 +22,9 @@ data class Image(
         )
     }
 
+    override fun toString(): String {
+        return "Image(imageId=$imageId, available=$available, uuidFile=$uuidFile, filename=$filename, title=$title, description=$description)"
+    }
+
+
 }

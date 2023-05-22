@@ -18,6 +18,54 @@ import org.springframework.web.bind.annotation.RestController
 class ProductController @Autowired constructor(
     private val clothBl: ClothBl
 ){
+    /*
+    POST: /api/v1/product
+    Body: (JSON)
+    {
+    page: (Int) (required)
+        -> para paginacion , empieza desde 1
+    limit: (Int) (required)
+        -> para paginacion , valores > 0
+    title: (String)
+        -> busqueda por el nombre del producto o prenda
+    color: (String)
+        -> filtro por color (Ex, #ff5733, ), solo minusculas
+    type: (String)
+        -> filtro por tipo, el nombre del tipo debe ser exacto ( Ex. Polera, pantalon)
+     size: (String)
+        -> filtro por size (Ex. L, XL, ...)
+     style: (String)
+        -> filtro por estilo (Ex. formal, casual)
+     priceLessThan:  (Double) **
+     priceGreaterThan: (Double) **
+        -> filtro por rango de precios,
+
+
+
+    }
+    Response: (JSON)
+    {
+        "data": Array?[
+            {
+                "cloth_id": Int,
+                "name": String,
+                "description": String,
+                "user_id": Int,
+                "images": Array?[
+                    {
+                        "title": String,
+                        "description": String,
+                        "url": String,
+                        "filename": String,
+                        "uuid_file": String,
+                    }
+                ]
+            }
+        ],
+        "message": String? ,
+        "success": Boolean
+    }
+     */
     @PostMapping()
     fun getDesignData(@ModelAttribute requestBody: SearchDto?): ResponseEntity<ResponseDto<Any>> {
         try{

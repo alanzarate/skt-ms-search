@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class KeycloakTokenDto (
-    var access_token: String,
-    var expires_in: Int,
-    var refresh_expires_in: Int,
-    var refresh_token: String,
+    var access_token: String?,
+    var expires_in: Int?,
+    var refresh_expires_in: Int?,
+    var refresh_token: String?,
     var token_type: String,
-    var not_before_policy: Int,
-    var session_state: String,
-    var scope: String
+    var not_before_policy: Int?,
+    var session_state: String?,
+    var scope: String?
 
 ) {
     override fun toString(): String {

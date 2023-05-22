@@ -24,5 +24,7 @@ class FileDto (
     val filename: String? = null,
     val uuidFile: String? = null,
 ){
-
+    override fun toString(): String {
+        return "FileDto(title=$title, description=$description, file=$file, url=$url, size=$size, filename=$filename, uuidFile=$uuidFile)"
+    }
 }
