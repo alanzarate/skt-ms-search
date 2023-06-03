@@ -55,4 +55,4 @@ keycloak:
             - PUT
             - DELETE
           patterns:
-            - /api/v1/*
+            - /removeThis/api/v1/*

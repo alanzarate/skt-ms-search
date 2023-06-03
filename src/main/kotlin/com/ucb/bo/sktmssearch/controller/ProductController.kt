@@ -5,12 +5,11 @@ import com.ucb.bo.sktmssearch.dto.ResponseDto
 import com.ucb.bo.sktmssearch.dto.SearchDto
 import com.ucb.bo.sktmssearch.exception.ParameterException
 import lombok.extern.slf4j.Slf4j
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @Slf4j
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 class ProductController @Autowired constructor(
     private val clothBl: ClothBl
 ){
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
     /*
     POST: /api/v1/product
     Body: (JSON)
@@ -67,9 +67,11 @@ class ProductController @Autowired constructor(
     }
      */
     @PostMapping()
-    fun getDesignData(@ModelAttribute requestBody: SearchDto?): ResponseEntity<ResponseDto<Any>> {
+    fun getDesignData(@RequestBody requestBody: SearchDto?): ResponseEntity<ResponseDto<Any>> {
         try{
+
             if (requestBody == null) throw ParameterException("Body faltante")
+            logger.info("(POST) getDesignData: user wants data $requestBody ")
             val result = clothBl.getSearchedByParams(requestBody)
             return ResponseEntity
                 .ok()

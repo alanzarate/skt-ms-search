@@ -47,17 +47,17 @@ interface ClothRepository{
 
     @Select( value=["SELECT pd.product_id , pd.name, pd.price, pd.description, pd.stock,pd.available, " +
             "tc.name as type, cc.name as color, fc.name as style, sc.name as size " +
-            "from  product pd, " +
+            "FROM  product pd, " +
             "color_cloth cc, " +
             "formality_cloth fc,   " +
             "size_cloth sc, " +
             "type_cloth tc " +
-            "where pd.type_id = tc.type_id " +
+            "WHERE pd.type_id = tc.type_id " +
             "and pd.color_cloth_id = cc.color_id " +
             "and pd.size_cloth_id = sc.size_id " +
             "and pd.formality_cloth_id = fc.formality_id   " +
             "\${command} " +
-            "GROUP BY cl.cloth_id " +
+            "GROUP BY pd.product_id , tc.name , cc.name , fc.name , sc.name " +
             "ORDER BY pd.product_id DESC " +
             "LIMIT \${limit} " +
            "OFFSET \${offset}; "])
