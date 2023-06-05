@@ -36,3 +36,4 @@ build/
 ## CUSTOM ##
 /directory_to_ignore/
 .env
+src/main/kotlin/com/ucb/bo/sktmssearch/config/CorsConfig.kt

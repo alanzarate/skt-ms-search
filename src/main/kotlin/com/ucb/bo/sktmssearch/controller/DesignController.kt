@@ -71,7 +71,6 @@ class DesignController @Autowired constructor(
     @PostMapping()
     fun getDesignData(@RequestBody requestBody: SearchDto?): ResponseEntity<ResponseDto<Any>>{
         try{
-
             if (requestBody == null) throw ParameterException("Body faltante")
             val result = designBl.getInformationOfDesign(requestBody)
 

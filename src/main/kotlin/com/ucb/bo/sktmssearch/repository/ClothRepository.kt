@@ -38,7 +38,7 @@ interface ClothRepository{
 
     @Select( value = [
         " select " +
-                "im.image_id , im.available, im.uuidFile, im.filename, im.title,\n" +
+                "im.image_id , im.available, im.uuid_file, im.filename, im.title,\n" +
                 "im.description " +
                 "from image im " +
                 "where im.cloth_id = \${clothId}"
