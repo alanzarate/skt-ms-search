@@ -5,7 +5,7 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <springProperty scope="context" name="application" source="spring.application.name" defaultValue="micro-service-user"/>
+    <springProperty scope="context" name="application" source="spring.application.name" defaultValue="micro-service-search"/>
     <springProperty scope="context" name="port" source="server.port" defaultValue="0000"/>
     <springProperty scope="context" name="logback_uri" source="custom-config.logs-uri" defaultValue="67.205.142.137:5000"/>
 
@@ -34,6 +34,9 @@
         <destination>${logback_uri}</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
                 <mdc />
                 <context />
                 <logLevel />
@@ -41,7 +44,11 @@
                 <pattern>
                     <pattern>
                         {
-                        "app": "skt-ms-search"
+                        "app": "${application:-}",
+                        "port": "${port:-}",
+                        "level": "${LOG_LEVEL_PATTERN}",
+                        "pid": "${PID}"
+
                         }
                     </pattern>
                 </pattern>
